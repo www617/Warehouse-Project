@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neuedu.yyzx.mapper.wsj.CustomersMapper">
+
+    <!-- 查询所有顾客 -->
+    <select id="selectAll" resultType="com.neuedu.yyzx.pojo.wsj.Customers">
+        SELECT * FROM customers
+    </select>
+
+
+
+
+    <!-- 根据ID查询顾客 -->
+    <select id="selectById" parameterType="java.lang.Integer"
+            resultType="com.neuedu.yyzx.pojo.wsj.Customers">
+        SELECT * FROM customers WHERE id = #{id}
+    </select>
+
+    <!-- 新增顾客 -->
+    <insert id="insert" parameterType="com.neuedu.yyzx.pojo.wsj.Customers">
+        INSERT INTO customers (status, name, sex, email, phone_number, create_time, update_time)
+        VALUES (#{status}, #{name}, #{sex}, #{email}, #{phoneNumber}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!-- 更新顾客信息 -->
+    <update id="update" parameterType="com.neuedu.yyzx.pojo.wsj.Customers">
+        UPDATE customers
+        SET status = #{status},
+        name = #{name},
+        sex = #{sex},
+        email = #{email},
+        phone_number = #{phoneNumber},
+        update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除顾客 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM customers WHERE id = #{id}
+    </delete>
+
+    <select id="selectByName" resultType="com.neuedu.yyzx.pojo.wsj.Customers">
+        SELECT
+        id, status, name, sex, email, phone_number AS phoneNumber, create_time AS createTime, update_time AS updateTime
+        FROM customers
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        <!-- 分页插件会自动添加 LIMIT 语句 -->
+    </select>
+</mapper>
